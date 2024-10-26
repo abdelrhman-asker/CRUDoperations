@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteTask } from "../features/tasks/taskSlice";
-const DeleteConf = (task) => {
+const DeleteConf = (task ,setConfirmation) => {
   const dispatch = useDispatch();
   return (
     <div className="MainDeleteConfirmation">
@@ -9,7 +9,7 @@ const DeleteConf = (task) => {
         <h2>Are you sure you want to delete this record?</h2>
         <div>
           <button onClick={() => dispatch(deleteTask(task.id))}>Delete</button>
-          <button>Cancel</button>
+          <button onClick={() => setConfirmation(false)}>Cancel</button>
         </div>
       </div>
     </div>
