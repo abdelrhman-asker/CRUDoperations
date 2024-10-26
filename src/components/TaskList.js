@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteTask } from "../features/tasks/taskSlice";
 import TaskForm from "./TaskForm";
@@ -31,7 +31,20 @@ const TaskList = () => {
     dispatch(deleteTask(taskId));
     setConfirmation(false);
   };
-
+  const [fetching, setFetching] = useState();
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/todos")
+      .then((response) => response.json())
+      .then((response) => setFetching(response));
+  }, []);
+  console.log(fetching?.map((fetched) => fetched.title));
+  useEffect(() => {
+    confirmation === true
+      ? document.querySelector(".App").classList.add("confirmationOn") &&
+        document.querySelector("body").classList.add("confirmationOn")
+      : document.querySelector(".App").classList.remove("confirmationOn") &&
+        document.querySelector("body").classList.remvoe("confirmationOn");
+  }, [confirmation]);
   return (
     <div>
       {Object.entries(tasksByState).map(([state, tasks]) => (
@@ -77,7 +90,7 @@ const TaskList = () => {
                         <button onClick={() => handleDelete(task.id)}>
                           Delete
                         </button>
-                        <button onClick={() => setConfirmation(false)}>
+                        <button onClick={() => setConfirmation(null)}>
                           Cancel
                         </button>
                       </div>
